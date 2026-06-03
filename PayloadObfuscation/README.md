@@ -131,6 +131,6 @@ This shellcode is obfuscated as IPv4 and IPv6 addresses.
 ```
 
 ### TODO
-- Add MAC-address and GUID obfuscation
-- Add IPv6, MAC-address and GUID deobfuscation
+- Add MAC-address and UUID obfuscation
+- Add IPv6, MAC-address and UUID deobfuscation
 - Create an exe that encrypts/obfuscates payload for you
