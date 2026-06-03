@@ -1,6 +1,6 @@
 # Payload Obfuscation
 
-When you encrypt shellcode with AES, RC4, or anything similar, the output looks like random bytes. AV and EDR products specifically scan PE sections for regions of suspicious entropy. An array of IPv4 strings has low, text-like entropy, which makes it look more like configuration data than an encrypted payload.
+When you encrypt shellcode with AES, RC4, or anything similar, the output looks like random bytes. AV and EDR products specifically scan PE sections for regions of suspicious entropy. An array of IPv4 strings has low, text-like entropy, which makes it look more like configuration data than an encrypted payload. So make sure to obfuscate your encrypted payload.
 
 ## Example output of `IPObfuscation.c`
 
@@ -129,3 +129,8 @@ This shellcode is obfuscated as IPv4 and IPv6 addresses.
 
 [i] Payload Successfully Deobfuscated
 ```
+
+### TODO
+- Add MAC-address and GUID obfuscation
+- Add IPv6, MAC-address and GUID deobfuscation
+- Create an exe that encrypts/obfuscates payload for you
