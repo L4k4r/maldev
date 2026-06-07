@@ -139,5 +139,5 @@ void PrintHex(const char* Name, BYTE* Buffer, DWORD Size) {
 	for (DWORD i = 0; i < Size; i++) {
 		printf("%02X", Buffer[i]);
 	}
-	printf("\n");
+	printf("\n\n");
 }

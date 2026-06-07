@@ -33,11 +33,10 @@ BOOL GenerateIpv4Output(unsigned char* pShellcode, SIZE_T ShellcodeSize) {
 	// Copy original shellcode, any remaining bytes stay 0x00 because of calloc()
 	memcpy(PaddedBuffer, pShellcode, ShellcodeSize);
 
-	printf("\n");
 	info("Payload size: %zu bytes", ShellcodeSize);
 	info("Padded size: %zu bytes \n", PaddedSize);
 
-	printf("char* ipv4Array[] = {\n\t");
+	printf("\nchar* ipv4Array[] = {\n\t");
 
 	int counter = 0;
 	char IP[32];
@@ -112,7 +111,7 @@ BOOL GenerateIpv6Output(unsigned char* pShellcode, SIZE_T ShellcodeSize) {
 	info("Payload size: %zu bytes", ShellcodeSize);
 	info("Padded size: %zu bytes \n", PaddedSize);
 
-	printf("char* ipv6Array[] = {\n\t");
+	printf("\nchar* ipv6Array[] = {\n\t");
 
 	char IP[64];
 	int counter = 0;
@@ -159,4 +158,67 @@ BOOL GenerateIpv6Output(unsigned char* pShellcode, SIZE_T ShellcodeSize) {
 
 	free(PaddedBuffer);
 	return EXIT_SUCCESS;
+}
+
+
+// Function takes 6 raw bytes and returns them in a MAC address string format
+void GenerateMAC(int a, int b, int c, int d, int e, int f, char* Output, SIZE_T OutputSize) {
+
+	// Creating the MAC address variable and saving it to the Output variable
+	snprintf(Output, OutputSize,"%0.2X-%0.2X-%0.2X-%0.2X-%0.2X-%0.2X", a, b, c, d, e, f);
+
+}
+
+// Generate the MAC output representation of the payload
+// Function requires a pointer or base addresss to the payload buffer and the size of the payload buffer
+BOOL GenerateMacOutput(unsigned char* pShellcode, SIZE_T ShellcodeSize) {
+	
+	// If the shellcode is null or the size is not a multiple of 6, exit
+	if (pShellcode == NULL || ShellcodeSize == NULL) {
+		warn("Payload is NULL");
+		return FALSE;
+	}
+
+	// Calculate padded size (next multiple of 6)
+	SIZE_T PaddedSize = ShellcodeSize;
+
+	while (PaddedSize % 6 != 0) {
+		PaddedSize++;
+	}
+
+	// Allocate zero-initialized buffer
+	unsigned char* PaddedBuffer = calloc(PaddedSize, 1);
+
+	if (PaddedBuffer == NULL) {
+		warn("Failed to allocate padded buffer");
+		return FALSE;
+	}
+
+	// Copy orignal payload
+	memcpy(PaddedBuffer, pShellcode, ShellcodeSize);
+
+	info("Payload size: %zu bytes", ShellcodeSize);
+	info("Padded size: %zu bytes", PaddedSize);
+	printf("\nchar* MacArray [%d] = {\n\t", (int)(ShellcodeSize / 6));
+
+	// Read one payload byte at a time, when the total is 6, begin generating the MAC address
+	int counter = 0;
+	char Mac[32];
+
+	for (SIZE_T i = 0; i < PaddedSize; i += 6) {
+		counter++;
+
+		GenerateMAC(PaddedBuffer[i], PaddedBuffer[i + 1], PaddedBuffer[i + 2], PaddedBuffer[i + 3], PaddedBuffer[i + 4], PaddedBuffer[i + 5], Mac, sizeof(Mac));
+
+		if (i == PaddedSize - 6)
+			printf("\"%s\"", Mac);
+		else
+			printf("\"%s\",", Mac);
+		
+		if (counter % 6 == 0)
+			printf("\n\t");
+	}
+	printf("\n};\n\n");
+	free(PaddedBuffer);
+	return TRUE;
 }

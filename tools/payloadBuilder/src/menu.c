@@ -20,8 +20,8 @@ void PrintMenu(void)
 
 	info("1 - Ipv4");
 	info("2 - Ipv6");
-	info("3 - MAC Address (COMING SOON)");
-	info("4 - UUID (COMING SOON)\n");
+	info("3 - MAC Address");
+	info("4 - UUID (COMING SOON?)\n");
 }
 
 int GetChoice(void) {
@@ -42,8 +42,22 @@ static int HexCharToInt(char c) {
 	if (c >= 'a' && c <= 'f')
 		return c - 'a' + 10;
 
-	return -1;
+	return EXIT_FAILURE;
 } 
+
+void PrintCArray(const char* Name, const BYTE* Buffer, SIZE_T Size) {
+	printf("\nunsigned char %s[%zu] = {\n\t", Name, Size);
+
+	for (SIZE_T i = 0; i < Size; i++) {
+		printf("0x%02X", Buffer[i]);
+
+		if (i != Size - 1)
+			printf(", ");
+		if ((i + 1) % 8 == 0 && i != Size - 1)
+			printf("\n\t");
+	}
+	printf("\n};\n");
+}
 
 BOOL ReadPayload(unsigned char** Payload, DWORD* PayloadSize) {
 

@@ -21,6 +21,8 @@ int main() {
 	BYTE key[AES_KEY_SIZE];
 	BYTE iv[AES_IV_SIZE];
 
+	printf("\n");
+	info("Generating random Key and IV ...");
 	GenerateRandomBytes(key, sizeof(key));
 	GenerateRandomBytes(iv, sizeof(iv));
 
@@ -41,8 +43,11 @@ int main() {
 		return FALSE;
 	}
 
-	PrintHex("AES Key", key, 32);
-	PrintHex("AES IV", iv, 16);
+	PrintCArray("AESkey", key, 32);
+	PrintCArray("AESIV", iv, 16);
+
+	printf("\n");
+	info("Encrypting payload ...");
 
 	PrintHex("Encrypted input", encryptedPayload, encryptedSize);
 
@@ -56,12 +61,18 @@ int main() {
 		GenerateIpv6Output(encryptedPayload, encryptedSize);
 		break;
 
+	case 3:
+		GenerateMacOutput(encryptedPayload, encryptedSize);
+		break;
+
 	default:
 		warn("Invaled choice\n");
 	}
 
 	free(payload);
 	free(encryptedPayload);
+
+	in("Press <Enter> To Continue ...");
 
 	return EXIT_SUCCESS;
 }
