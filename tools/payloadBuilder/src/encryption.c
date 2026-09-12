@@ -132,6 +132,16 @@ BOOL EncryptAES(PUCHAR Plaintext, DWORD PlaintextSize, PUCHAR Key, PUCHAR IV, PU
 
 }
 
+VOID XorRollingByInputKey(IN PBYTE pPlaintext, IN SIZE_T szPlaintextSize, IN PBYTE pKey, IN SIZE_T szKeySize) {
+
+	for (SIZE_T i = 0, j = 0; i < szPlaintextSize; i++, j++)
+	{
+		if (j >= szKeySize) j = 0;
+
+		pPlaintext[i] ^= pKey[j] ^ (BYTE)(i * 0x9B) ^ (BYTE)(i >> 3);
+	}
+}
+
 void PrintHex(const char* Name, BYTE* Buffer, DWORD Size) {
 
 	printf("\n%s:\n", Name);

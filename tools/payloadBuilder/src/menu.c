@@ -4,31 +4,57 @@
 void PrintMenu(void)
 {
 
-	printf(
-		".______      ___   ____    ____  __        ______        ___       _______  .______    __    __   __   __       _______   _______ .______      \n"
-		"|   _  \\    /   \\  \\   \\  /   / |  |      /  __  \\      /   \\     |       \\ |   _  \\  |  |  |  | |  | |  |     |       \\ |   ____||   _  \\     \n"
-		"|  |_)  |  /  ^  \\  \\   \\/   /  |  |     |  |  |  |    /  ^  \\    |  .--.  ||  |_)  | |  |  |  | |  | |  |     |  .--.  ||  |__   |  |_)  |    \n"
-		"|   ___/  /  /_\\  \\  \\_    _/   |  |     |  |  |  |   /  /_\\  \\   |  |  |  ||   _  <  |  |  |  | |  | |  |     |  |  |  ||   __|  |      /     \n"
-		"|  |     /  _____  \\   |  |     |  `----.|  `--'  |  /  _____  \\  |  '--'  ||  |_)  | |  `--'  | |  | |  `----.|  '--'  ||  |____ |  |\\  \\----.\n"
-		"| _|    /__/     \\__\\  |__|     |_______| \\______/  /__/     \\__\\ |_______/ |______/   \\______/  |__| |_______||_______/ |_______|| _| `._____|\n"
+	//printf(
+	//	".______      ___   ____    ____  __        ______        ___       _______  .______    __    __   __   __       _______   _______ .______      \n"
+	//	"|   _  \\    /   \\  \\   \\  /   / |  |      /  __  \\      /   \\     |       \\ |   _  \\  |  |  |  | |  | |  |     |       \\ |   ____||   _  \\     \n"
+	//	"|  |_)  |  /  ^  \\  \\   \\/   /  |  |     |  |  |  |    /  ^  \\    |  .--.  ||  |_)  | |  |  |  | |  | |  |     |  .--.  ||  |__   |  |_)  |    \n"
+	//	"|   ___/  /  /_\\  \\  \\_    _/   |  |     |  |  |  |   /  /_\\  \\   |  |  |  ||   _  <  |  |  |  | |  | |  |     |  |  |  ||   __|  |      /     \n"
+	//	"|  |     /  _____  \\   |  |     |  `----.|  `--'  |  /  _____  \\  |  '--'  ||  |_)  | |  `--'  | |  | |  `----.|  '--'  ||  |____ |  |\\  \\----.\n"
+	//	"| _|    /__/     \\__\\  |__|     |_______| \\______/  /__/     \\__\\ |_______/ |______/   \\______/  |__| |_______||_______/ |_______|| _| `._____|\n"
+	//);
+
+
+	printf("\n\n"
+		"\t8 8 8 8                     ,ooo.\n"
+		"\t 8a8 8a8                    oP   ?b\n"
+		"\td888a888zzzzzzzzzzzzzzzzzzzz8     8b\n"
+		"\t     `""^""'                    ?o___oP'\n"
 	);
 
+	printf("\nThis program will encrypt and obfuscate the payload entered by the user.\n");
+	printf("The user can choose the encryption method and the obfucsation technique.\n\n");
 
-	printf("This program will encrypt and obfuscate the payload entered by the user.\n");
-	printf("The encryption will be done with AES with a random 32 byte key and a random 16 byte IV.\n");
-	printf("The user can chose what kind of obfuscation the program will use for the encrypted payload.\n\n");
 
+}
+
+
+int GetEncryptionChoice(void) {
+	int choice = 0;
+
+	printf("\n");
+	warn("Encryption Methods Available");
+	info("0 - None (skip encryption)");
+	info("1 - XOR (Rolling Key)");
+	info("2 - AES-256\n");
+	
+
+	in("Select encrpytion method: ");
+	scanf_s("%d", &choice);
+
+	return choice;
+}
+
+int GetObfuscationChoice(void) {
+	int choice = 0;
+
+	warn("Obfuscation Method Available");
+	info("0 - None (skip obfuscation)");
 	info("1 - Ipv4");
 	info("2 - Ipv6");
 	info("3 - MAC Address");
 	info("4 - UUID (COMING SOON?)\n");
-}
-
-int GetChoice(void) {
-
-	int choice = 0;
-
-	printf("Select obfuscation technique: ");
+	
+	in("Select obfuscation method: ");
 	scanf_s("%d", &choice);
 
 	return choice;
@@ -64,7 +90,7 @@ BOOL ReadPayload(unsigned char** Payload, DWORD* PayloadSize) {
 	char input[16384];
 
 	printf("\n");
-	okay("Enter payload in hex:\n");
+	in("Enter payload in hex: \n");
 	scanf_s("%16383s", input, (unsigned)sizeof(input));
 
 	size_t len = strlen(input);
